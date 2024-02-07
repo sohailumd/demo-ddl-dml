@@ -24,12 +24,12 @@ pipeline {
                               doGenerateSubmoduleConfigurations: false, 
                               extensions: [], 
                               userRemoteConfigs: [[url: 'git@github.com:sohailumd/demo-ddl-dml.git']]])
-					def sqlQueryDelete = readFile('psql_scripts/Table_Delete.sql')
+					def sqlQuery1 = readFile('psql_scripts/Table_Insert.sql')
 					def sqlQuery2 = readFile('psql_scripts/Table_Exist.sql')
                     sh """
                     pwd
                     ls -l
-					PGPASSWORD=${PG_pg_PSW} psql -h ${env.PG_HOST} -p ${env.PG_PORT} -d ${env.PG_DATABASE} -U ${PG_pg_USR} -c \"${sqlQueryDelete}\"
+					PGPASSWORD=${PG_pg_PSW} psql -h ${env.PG_HOST} -p ${env.PG_PORT} -d ${env.PG_DATABASE} -U ${PG_pg_USR} -c \"${sqlQuery1}\"
 					PGPASSWORD=${PG_pg_PSW} psql -h ${env.PG_HOST} -p ${env.PG_PORT} -d ${env.PG_DATABASE} -U ${PG_pg_USR} -c \"${sqlQuery2}\"
 					echo "HURRAY"
 					"""
