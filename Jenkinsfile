@@ -13,18 +13,24 @@ pipeline {
             steps {
                 script {
                     echo 'Cloning repository...'
+                    sh '''
+                    git --version
+                    which git
+                    whoami
+                    ls -l
+                    '''
                     checkout([$class: 'GitSCM', 
                               branches: [[name: 'main']], 
                               doGenerateSubmoduleConfigurations: false, 
                               extensions: [], 
                               userRemoteConfigs: [[url: 'git@github.com:sohailumd/demo-ddl-dml.git']]])
-					def sqlQueryforCreateTable = readFile('psql_script/Table_Create.sql')
-                    def sqlQueryforInsertRows  = readFile('psql_script/Table_Insert.sql')
+					def sqlQueryCreate = readFile('psql_scripts/Table_Create.sql')
+					def sqlQueryInsert = readFile('psql_scripts/Table_Insert.sql')
                     sh """
                     pwd
                     ls -l
-					PGPASSWORD=${PG_pg_PSW} psql -h ${env.PG_HOST} -p ${env.PG_PORT} -d ${env.PG_DATABASE} -U ${PG_pg_USR} -c \"${sqlQueryforCreateTable}\"
-                    PGPASSWORD=${PG_pg_PSW} psql -h ${env.PG_HOST} -p ${env.PG_PORT} -d ${env.PG_DATABASE} -U ${PG_pg_USR} -c \"${sqlQueryforInsertRows}\"
+					PGPASSWORD=${PG_pg_PSW} psql -h ${env.PG_HOST} -p ${env.PG_PORT} -d ${env.PG_DATABASE} -U ${PG_pg_USR} -c \"${sqlQueryCreate}\"
+					PGPASSWORD=${PG_pg_PSW} psql -h ${env.PG_HOST} -p ${env.PG_PORT} -d ${env.PG_DATABASE} -U ${PG_pg_USR} -c \"${sqlQueryInsert}\"
 					echo "HURRAY"
 					"""
                 }
