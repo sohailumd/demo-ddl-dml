@@ -24,8 +24,8 @@ pipeline {
                               doGenerateSubmoduleConfigurations: false, 
                               extensions: [], 
                               userRemoteConfigs: [[url: 'git@github.com:sohailumd/demo-ddl-dml.git']]])
-					def sqlQuery1 = readFile('psql_scripts/Table_Delete.sql')
-					def sqlQuery2 = readFile('psql_scripts/Table_Exist.sql')
+					def sqlQuery1 = readFile('psql_scripts/Table_Create.sql')
+					def sqlQuery2 = readFile('psql_scripts/Table_Insert.sql')
                     sh """
                     pwd
                     ls -l
